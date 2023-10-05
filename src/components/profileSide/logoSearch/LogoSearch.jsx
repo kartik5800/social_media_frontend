@@ -1,5 +1,5 @@
 import React from "react";
-import logo from "../../../img/logo.jpg";
+import logo from "../../../img/softlogo.png";
 import { AiOutlineSearch } from "react-icons/ai";
 import "./LogoSearch.css";
 
