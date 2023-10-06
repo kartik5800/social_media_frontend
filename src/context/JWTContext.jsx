@@ -28,10 +28,10 @@ const handlers = {
     };
   },
   REGISTER: (state, action) => {
-    const { user } = action.payload;
+    const { isAuthenticated, user } = action.payload;
     return {
       ...state,
-      isAuthenticated: true,
+      isAuthenticated,
       user,
     };
   },
@@ -73,6 +73,7 @@ function AuthProvider({ children }) {
         type: "INITIALIZE",
         payload: {
           isAuthenticated: false,
+          user: null,
         },
       });
     }
@@ -86,8 +87,12 @@ function AuthProvider({ children }) {
         data
       );
 
-      const { user, token } = response.data;
+      const { user, token, expiresIn } = response.data;
+
+      const expirationTime = Date.now() + expiresIn;
+
       window.localStorage.setItem("accessToken", token);
+      window.localStorage.setItem("token_expires_in", expirationTime);
       window.localStorage.setItem("userData", JSON.stringify(user));
       dispatch({
         type: "LOGIN",
@@ -97,6 +102,13 @@ function AuthProvider({ children }) {
         },
       });
     } catch (error) {
+      dispatch({
+        type: "LOGIN",
+        payload: {
+          isAuthenticated: false,
+          user: null,
+        },
+      });
       console.error("Login error:", error);
     }
   };
@@ -108,8 +120,10 @@ function AuthProvider({ children }) {
         "http://localhost:8080/auth/register",
         data
       );
-      const { user, token } = response.data;
+      const { user, token, expiresIn } = response.data;
+      const expirationTime = Date.now() + expiresIn;
       window.localStorage.setItem("accessToken", token);
+      window.localStorage.setItem("token_expires_in", expirationTime);
       window.localStorage.setItem("userData", JSON.stringify(user));
       dispatch({
         type: "REGISTER",
@@ -119,6 +133,13 @@ function AuthProvider({ children }) {
         },
       });
     } catch (error) {
+      dispatch({
+        type: "REGISTER",
+        payload: {
+          isAuthenticated: false,
+          user: null,
+        },
+      });
       console.error("Registration error:", error);
     }
   };
