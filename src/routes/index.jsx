@@ -50,7 +50,7 @@ export default function Router() {
       children: [
         { element: <Navigate to={"/home"} replace />, index: true },
         { path: "home", element: <Home /> },
-        { path: "profile", element: <Profile /> },
+        { path: "profile/:id", element: <Profile /> },
       ],
     },
   ]);

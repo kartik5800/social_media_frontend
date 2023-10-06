@@ -6,6 +6,7 @@
     background-color: var(--cardColor);
     padding: 1rem;
     border-radius: 1rem;
+    width: 100%;
 }
 
 .infoHead{

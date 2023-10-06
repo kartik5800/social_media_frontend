@@ -1,7 +1,65 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button, Modal } from "react-bootstrap";
+import useAuth from "../../../hooks/useAuth";
+import { useDispatch } from "react-redux";
+import { useParams } from "react-router-dom";
+import { uploadImage } from "../../../redux/postReducer/postReducer";
+import { updateUser } from "../../../redux/userReducer/userReducer";
 
-const ProfileModal = ({ modalOpened, handleClose }) => {
+const ProfileModal = ({ modalOpened, handleClose, data }) => {
+  const { password, ...other } = data;
+  const [formData, setFormData] = useState(other);
+  const [profileImage, setProfileImage] = useState(null);
+  const [coverImage, setCoverImage] = useState(null);
+  const dispatch = useDispatch();
+  const params = useParams();
+
+  const { user } = useAuth();
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const onImageChange = (event) => {
+    if (event.target.files && event.target.files[0]) {
+      let img = event.target.files[0];
+      event.target.name === "profileImage"
+        ? setProfileImage(img)
+        : setCoverImage(img);
+    }
+  };
+
+  // form submission
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    let UserData = formData;
+    if (profileImage) {
+      const data = new FormData();
+      const fileName = Date.now() + profileImage.name;
+      data.append("name", fileName);
+      data.append("file", profileImage);
+      UserData.profilePicture = fileName;
+      try {
+        dispatch(uploadImage(data));
+      } catch (err) {
+        console.log(err);
+      }
+    }
+    if (coverImage) {
+      const data = new FormData();
+      const fileName = Date.now() + coverImage.name;
+      data.append("name", fileName);
+      data.append("file", coverImage);
+      UserData.coverPicture = fileName;
+      try {
+        dispatch(uploadImage(data));
+      } catch (err) {
+        console.log(err);
+      }
+    }
+    dispatch(updateUser(params.id, UserData));
+    handleClose();
+  };
+
   return (
     <>
       <Modal
@@ -15,74 +73,82 @@ const ProfileModal = ({ modalOpened, handleClose }) => {
             <Modal.Title>Your info</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <form className="infoForm">
-              <div style={{ display: "flex", margin: "8px", gap: "1rem" }}>
+            <form className="infoForm" onSubmit={handleSubmit}>
+              <h3>Your Info</h3>
+              <div>
                 <input
+                  value={formData.firstname}
+                  onChange={handleChange}
                   type="text"
-                  className="w-100 p-2 rounded-3"
-                  name="FirstName"
                   placeholder="First Name"
-                  style={{ outline: "none", border: "none" }}
+                  name="firstname"
+                  className="infoInput"
                 />
-
                 <input
+                  value={formData.lastname}
+                  onChange={handleChange}
                   type="text"
-                  className="w-100 p-2 rounded-3"
-                  name="LastName"
                   placeholder="Last Name"
-                  style={{ outline: "none", border: "none" }}
+                  name="lastname"
+                  className="infoInput"
                 />
               </div>
 
-              <div style={{ margin: "8px", gap: "1rem" }}>
+              <div>
                 <input
+                  value={formData.worksAt}
+                  onChange={handleChange}
                   type="text"
-                  className="w-100 p-2 rounded-3"
-                  name="worksAT"
                   placeholder="Works at"
-                  style={{ outline: "none", border: "none" }}
+                  name="worksAt"
+                  className="infoInput"
                 />
               </div>
 
-              <div style={{ display: "flex", margin: "8px", gap: "1rem" }}>
+              <div>
                 <input
+                  value={formData.livesIn}
+                  onChange={handleChange}
                   type="text"
-                  className="w-100 p-2 rounded-3"
-                  name="livesIN"
-                  placeholder="LIves in"
-                  style={{ outline: "none", border: "none" }}
+                  placeholder="Lives in"
+                  name="livesIn"
+                  className="infoInput"
                 />
-
                 <input
+                  value={formData.country}
+                  onChange={handleChange}
                   type="text"
-                  className="w-100 p-2 rounded-3"
-                  name="Country"
                   placeholder="Country"
-                  style={{ outline: "none", border: "none" }}
+                  name="country"
+                  className="infoInput"
                 />
               </div>
 
-              <div style={{ margin: "8px", gap: "1rem" }}>
+              <div>
                 <input
+                  value={formData.relationship}
+                  onChange={handleChange}
                   type="text"
-                  className="w-100 p-2 rounded-3"
-                  placeholder="RelationShip Status"
-                  style={{ outline: "none", border: "none" }}
+                  className="infoInput"
+                  placeholder="Relationship status"
+                  name="relationship"
                 />
               </div>
 
-              <div style={{ display: "flex", margin: "8px", gap: "1rem" }}>
-                <div>
-                  Profile Image
-                  <input type="file" name="profileImg" />
-                </div>
-                <div>
-                  Cover Image
-                  <input type="file" name="coverImg" />
-                </div>
+              <div>
+                Profile image
+                <input
+                  type="file"
+                  name="profileImage"
+                  onChange={onImageChange}
+                />
+                Cover image
+                <input type="file" name="coverImage" onChange={onImageChange} />
               </div>
 
-              {/* <button className="button infoButton">Update</button> */}
+              <button className="button infoButton" type="submit">
+                Update
+              </button>
             </form>
           </Modal.Body>
           <Modal.Footer>

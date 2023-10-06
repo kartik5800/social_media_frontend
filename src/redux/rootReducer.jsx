@@ -5,6 +5,7 @@ import { combineReducers } from "redux";
 import storage from "redux-persist/lib/storage";
 // slices
 import postReducer from "./postReducer/postReducer";
+import userReducer from "./userReducer/userReducer";
 // dashboard
 
 // ----------------------------------------------------------------------
@@ -18,6 +19,7 @@ const rootPersistConfig = {
 
 const rootReducer = combineReducers({
   postReducer,
+  userReducer,
 });
 
 export { rootPersistConfig, rootReducer };

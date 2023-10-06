@@ -3,13 +3,12 @@ import "./ProfileCard.css";
 import { Link } from "react-router-dom";
 import { PATH_LANDING_APP } from "../../../routes/path";
 import useAuth from "../../../hooks/useAuth";
+import { useSelector } from "react-redux";
 
-const ProfileCard = () => {
+const ProfileCard = ({ location }) => {
   const { user } = useAuth();
   const serverPublic = process.env.REACT_APP_PUBLIC_FOLDER;
-  const ProfilePage = false;
-
-  console.log("user", user);
+  const { posts } = useSelector((state) => state.postReducer);
   return (
     <div className="ProfileCard">
       <div className="ProfileImage">
@@ -52,11 +51,13 @@ const ProfileCard = () => {
             <span>Followers</span>
           </div>
 
-          {ProfilePage && (
+          {location === "profilePage" && (
             <>
               <div className="vl"></div>
               <div className="follow">
-                <span>3</span>
+                <span>
+                  {posts?.filter((post) => post.userId === user._id).length}
+                </span>
                 <span>Posts</span>
               </div>
             </>
@@ -64,11 +65,16 @@ const ProfileCard = () => {
         </div>
         <hr />
       </div>
-      {ProfilePage ? (
+      {location === "profilePage" ? (
         ""
       ) : (
         <span>
-          <Link to={PATH_LANDING_APP.profile}>My Profile</Link>
+          <Link
+            to={`${PATH_LANDING_APP.profile}/${user?._id}`}
+            style={{ textDecoration: "none", color: "inherit" }}
+          >
+            My Profile
+          </Link>
         </span>
       )}
     </div>

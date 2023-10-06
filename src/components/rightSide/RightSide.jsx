@@ -5,6 +5,8 @@ import { AiFillHome, AiFillSetting } from "react-icons/ai";
 import { IoIosNotifications } from "react-icons/io";
 import TrendCard from "./trendCard/TrendCard";
 import ShareModal from "./shareModal/ShareModal";
+import { Link } from "react-router-dom";
+import { PATH_LANDING_APP } from "../../routes/path";
 
 const RightSide = () => {
   const [modalOpened, setModalOpened] = useState(false);
@@ -13,7 +15,12 @@ const RightSide = () => {
   return (
     <div className="RightSide">
       <div className="navIcons" style={{ fontSize: "25px" }}>
-        <AiFillHome />
+        <Link
+          to={PATH_LANDING_APP.root}
+          style={{ textDecoration: "none", color: "inherit" }}
+        >
+          <AiFillHome />
+        </Link>
         <AiFillSetting />
         <IoIosNotifications />
         <BiCommentDetail />
