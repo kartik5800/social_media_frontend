@@ -1,15 +1,14 @@
 import React from "react";
-import "./Profile.css";
 import ProfileLeft from "../../components/profile/profileLeft/ProfileLeft";
 import ProfileCard from "../../components/profileSide/profileCard/ProfileCard";
 import PostSide from "../../components/postSide/PostSide";
 import RightSide from "../../components/rightSide/RightSide";
+import "./Profile.css";
 
 const Profile = () => {
   return (
     <div className="Profile">
       <ProfileLeft />
-
       <div className="Profile-center">
         <ProfileCard />
         <PostSide />

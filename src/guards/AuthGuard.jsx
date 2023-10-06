@@ -16,11 +16,7 @@ export default function AuthGuard({ children }) {
   const [requestedLocation, setRequestedLocation] = useState(null);
 
   if (!isInitialized) {
-    return (
-      <div>
-        <p>Loading ...</p>
-      </div>
-    );
+    return <div class="spinner"></div>;
   }
 
   if (!isAuthenticated) {

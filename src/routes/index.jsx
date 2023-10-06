@@ -7,12 +7,12 @@ import GuestGuard from "../guards/GuestGuard";
 import AuthGuard from "../guards/AuthGuard";
 // layouts
 import LandingPageLayout from "../Layouts/LandingPageLayout";
-// pages
-import Home from "../pages/home/Home";
-import Profile from "../pages/profile/Profile";
 // auth
 import Login from "../pages/auth/Login";
 import SignUp from "../pages/auth/SignUp";
+// pages
+import Home from "../pages/home/Home";
+import Profile from "../pages/profile/Profile";
 
 // ----------------------------------------------------------------------
 
@@ -50,7 +50,7 @@ export default function Router() {
       children: [
         { element: <Navigate to={"/home"} replace />, index: true },
         { path: "home", element: <Home /> },
-        { path: "profile/:id", element: <Profile /> },
+        { path: "profile", element: <Profile /> },
       ],
     },
   ]);

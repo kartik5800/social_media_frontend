@@ -60,7 +60,6 @@ const SignUp = () => {
     }
 
     if (formIsValid) {
-      console.log(data);
       const response = await register(data);
 
       if (response?.status === "Success") {
