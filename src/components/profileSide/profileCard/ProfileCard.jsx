@@ -7,8 +7,11 @@ import { useSelector } from "react-redux";
 
 const ProfileCard = ({ location }) => {
   const { user } = useAuth();
+  console.log("user", user);
+  console.log("location", location);
   const serverPublic = process.env.REACT_APP_PUBLIC_FOLDER;
   const { posts } = useSelector((state) => state.postReducer);
+
   return (
     <div className="ProfileCard">
       <div className="ProfileImage">

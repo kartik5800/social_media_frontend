@@ -5,14 +5,14 @@ import ProfileModal from "../profileModal/ProfileModal";
 import { useParams } from "react-router-dom";
 import useAuth from "../../../hooks/useAuth";
 import { getUser } from "../../../redux/userReducer/userReducer";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 const InfoCard = () => {
   const params = useParams();
   const dispatch = useDispatch();
-  const { users, isLoading } = useSelector((state) => state.userReducer);
   const { user } = useAuth();
   const profileUserId = params.id;
+  // const profileUserId = "651ce6f021596871c90297ca";
 
   const [profileUser, setProfileUser] = useState({});
   console.log("profileUser", profileUser);
@@ -28,6 +28,7 @@ const InfoCard = () => {
           setProfileUser(user);
         } else {
           const responseData = await dispatch(getUser(profileUserId));
+          console.log("responseData", responseData);
           setProfileUser(responseData);
         }
       } catch (error) {
@@ -35,7 +36,7 @@ const InfoCard = () => {
       }
     };
     fetchProfileUser();
-  }, [profileUserId, user._id, dispatch, getUser]);
+  }, [profileUserId, user, dispatch, getUser]);
 
   return (
     <div className="InfoCard">
@@ -58,6 +59,13 @@ const InfoCard = () => {
 
       <div className="info">
         <span>
+          <b>Name :- </b>
+        </span>
+        <span>{profileUser.firstname ?? ""}</span>
+      </div>
+
+      <div className="info">
+        <span>
           <b>Status :- </b>
         </span>
         <span>{profileUser.relationship ?? ""}</span>
@@ -67,7 +75,7 @@ const InfoCard = () => {
         <span>
           <b>Lives in :- </b>
         </span>
-        <span>{profileUser.livesIn ?? ""}</span>
+        <span>{profileUser.livesin ?? ""}</span>
       </div>
 
       <div className="info">

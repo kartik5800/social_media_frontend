@@ -1,25 +1,26 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./FollowersCard.css";
 import { Followers } from "../../../Data/FollowersData";
 
+import { getAllUser } from "../../../redux/userReducer/userReducer";
+import { useDispatch, useSelector } from "react-redux";
+import Users from "./Users";
+import useAuth from "../../../hooks/useAuth";
+
 const FollowersCard = () => {
+  const { allusers, isLoading } = useSelector((state) => state.userReducer);
+  const { user } = useAuth();
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getAllUser());
+  }, []);
+
   return (
     <div className="FollowersCard">
       <h3>Who is following you</h3>
 
-      {Followers.map((follower, index) => {
-        return (
-          <div className="follower" key={index}>
-            <div>
-              <img src={follower.img} alt="" className="followerImage" />
-              <div className="name">
-                <span>{follower.name}</span>
-                <span>@{follower.username}</span>
-              </div>
-            </div>
-            <button className="button fc-button">Follow</button>
-          </div>
-        );
+      {allusers.map((person, id) => {
+        if (person._id !== user._id) return <Users person={person} key={id} />;
       })}
     </div>
   );

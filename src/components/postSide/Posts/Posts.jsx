@@ -4,11 +4,13 @@ import Post from "../Post/Post";
 import { useDispatch, useSelector } from "react-redux";
 import { getTimelinePosts } from "../../../redux/postReducer/postReducer";
 import useAuth from "../../../hooks/useAuth";
+import { useParams } from "react-router-dom";
 
 const Posts = () => {
   const { user } = useAuth();
+  const params = useParams();
   const dispatch = useDispatch();
-  const { posts, isLoading } = useSelector((state) => state.postReducer);
+  let { posts, isLoading } = useSelector((state) => state.postReducer);
 
   useEffect(() => {
     dispatch(getTimelinePosts(user._id));
@@ -21,6 +23,9 @@ const Posts = () => {
       </div>
     );
   }
+
+  if (!posts) return "No Posts";
+  if (params.id) posts = posts.filter((post) => post.userId === params.id);
 
   return (
     <div className="Posts">

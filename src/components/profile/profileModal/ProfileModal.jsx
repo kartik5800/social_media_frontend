@@ -14,7 +14,7 @@ const ProfileModal = ({ modalOpened, handleClose, data }) => {
   const dispatch = useDispatch();
   const params = useParams();
 
-  const { user } = useAuth();
+  const { user, updateUserInAuth } = useAuth();
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -29,7 +29,7 @@ const ProfileModal = ({ modalOpened, handleClose, data }) => {
   };
 
   // form submission
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     let UserData = formData;
     if (profileImage) {
@@ -39,7 +39,7 @@ const ProfileModal = ({ modalOpened, handleClose, data }) => {
       data.append("file", profileImage);
       UserData.profilePicture = fileName;
       try {
-        dispatch(uploadImage(data));
+        await dispatch(uploadImage(data));
       } catch (err) {
         console.log(err);
       }
@@ -51,12 +51,14 @@ const ProfileModal = ({ modalOpened, handleClose, data }) => {
       data.append("file", coverImage);
       UserData.coverPicture = fileName;
       try {
-        dispatch(uploadImage(data));
+        await dispatch(uploadImage(data));
       } catch (err) {
         console.log(err);
       }
     }
-    dispatch(updateUser(params.id, UserData));
+
+    await dispatch(updateUser(params.id, UserData));
+    updateUserInAuth({ ...user, ...UserData });
     handleClose();
   };
 
@@ -107,11 +109,11 @@ const ProfileModal = ({ modalOpened, handleClose, data }) => {
 
               <div>
                 <input
-                  value={formData.livesIn}
+                  value={formData.livesin}
                   onChange={handleChange}
                   type="text"
                   placeholder="Lives in"
-                  name="livesIn"
+                  name="livesin"
                   className="infoInput"
                 />
                 <input

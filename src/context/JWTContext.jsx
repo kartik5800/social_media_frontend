@@ -1,14 +1,12 @@
 import { createContext, useEffect, useReducer } from "react";
 import axios from "axios";
 
-// Define your initial state
 const initialState = {
   isAuthenticated: false,
   isInitialized: false,
   user: null,
 };
 
-// Define action handlers
 const handlers = {
   INITIALIZE: (state, action) => {
     const { isAuthenticated, user } = action.payload;
@@ -35,18 +33,24 @@ const handlers = {
       user,
     };
   },
+  UPDATE_USER_IN_AUTH: (state, action) => {
+    console.log("jwt context", state, action);
+    return {
+      ...state,
+      user: action.payload,
+    };
+  },
 };
 
-// Define the reducer
 const reducer = (state, action) =>
   handlers[action.type] ? handlers[action.type](state, action) : state;
 
-// Create the AuthContext
 const AuthContext = createContext({
   ...initialState,
   method: "jwt",
   login: () => Promise.resolve(),
   register: () => Promise.resolve(),
+  updateUserInAuth: (user) => {},
 });
 
 function AuthProvider({ children }) {
@@ -79,7 +83,6 @@ function AuthProvider({ children }) {
     }
   }, []);
 
-  // Define your login function
   const login = async (data) => {
     try {
       const response = await axios.post(
@@ -113,7 +116,6 @@ function AuthProvider({ children }) {
     }
   };
 
-  // Define your register function
   const register = async (data) => {
     try {
       const response = await axios.post(
@@ -144,6 +146,14 @@ function AuthProvider({ children }) {
     }
   };
 
+  const updateUserInAuth = (user) => {
+    window.localStorage.setItem("userData", JSON.stringify(user));
+    dispatch({
+      type: "UPDATE_USER_IN_AUTH",
+      payload: user,
+    });
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -151,6 +161,7 @@ function AuthProvider({ children }) {
         method: "jwt",
         login,
         register,
+        updateUserInAuth,
       }}
     >
       {children}

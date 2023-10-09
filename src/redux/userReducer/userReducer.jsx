@@ -12,6 +12,7 @@ const initialState = {
   isLoading: false,
   error: null,
   users: {},
+  allusers: [],
   isUploading: false,
   profileUploadingDateSuccess: null,
 };
@@ -23,17 +24,6 @@ const slice = createSlice({
     // START LOADING
     startLoading(state) {
       state.isLoading = true;
-    },
-
-    // START LIKING
-    startLike(state) {
-      state.isLike = true;
-    },
-
-    // HAS  LIKE ERROR
-    hasLikeError(state, action) {
-      state.isLike = false;
-      state.error = action.payload;
     },
 
     // HAS ERROR
@@ -48,34 +38,58 @@ const slice = createSlice({
       state.users = action.payload;
     },
 
-    // CREATE USER
-    createEventSuccess(state, action) {
+    // GET LL USER
+    getAllUserEventsSuccess(state, action) {
       state.isLoading = false;
-      state.users = action.payload;
+      state.allusers = action.payload;
     },
 
     // UPDATE USER
     updateEventSuccess(state, action) {
       state.isLoading = false;
-      state.data = action.payload;
+      state.users = action.payload;
     },
 
-    // Attachments Uploading
-    startUploadLoading(state, action) {
-      state.isUploading = true;
-      state.successMessage = null;
-      state.profileUploadingDateSuccess = null;
+    followUserSuccess(state, action) {
+      state.users = {
+        ...state.users,
+        following: [...state.users.following, action.payload],
+      };
     },
 
-    updateProfileAttachmentsSuccess(state, action) {
-      state.isUploading = false;
-      state.profileUploadingDateSuccess = action?.payload?.message;
+    unfollowUserSuccess(state, action) {
+      state.users = {
+        ...state.users,
+        following: state.users.following.filter(
+          (personId) => personId !== action.payload
+        ),
+      };
     },
   },
 });
 
 // Reducer
 export default slice.reducer;
+
+// ----------------------------------------------------------------------
+
+export function getAllUser() {
+  return async (dispatch) => {
+    // Pass `dispatch` as an argument
+    dispatch(slice.actions.startLoading());
+    try {
+      const response = await axios.get(`http://localhost:8080/user`);
+
+      console.log("================", response);
+      dispatch(slice.actions.getAllUserEventsSuccess(response.data));
+
+      return response.data;
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+      throw error;
+    }
+  };
+}
 
 // ----------------------------------------------------------------------
 
@@ -91,10 +105,10 @@ export function getUser(profileUserId) {
       console.log("================", response);
       dispatch(slice.actions.getEventsSuccess(response.data));
 
-      return response.data; // Return the data from the function
+      return response.data;
     } catch (error) {
       dispatch(slice.actions.hasError(error));
-      throw error; // Throw the error so you can handle it in the component
+      throw error;
     }
   };
 }
@@ -116,3 +130,35 @@ export function updateUser(userId, UserData) {
 }
 
 // ----------------------------------------------------------------------
+
+export function followUser(userId, currentUserId) {
+  return async () => {
+    dispatch(slice.actions.startLoading());
+    try {
+      const response = await axios.put(
+        `http://localhost:8080/user/${userId}/follow`,
+        currentUserId
+      );
+      dispatch(slice.actions.followUserSuccess(response.data));
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
+
+// ----------------------------------------------------------------------
+
+export function unFollowUser(userId, currentUserId) {
+  return async () => {
+    dispatch(slice.actions.startLoading());
+    try {
+      const response = await axios.put(
+        `http://localhost:8080/user/${userId}/unfollow`,
+        currentUserId
+      );
+      dispatch(slice.actions.unfollowUserSuccess(response.data));
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
+}
