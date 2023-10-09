@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import "./FollowersCard.css";
-import { Followers } from "../../../Data/FollowersData";
 
 import { getAllUser } from "../../../redux/userReducer/userReducer";
 import { useDispatch, useSelector } from "react-redux";
@@ -17,7 +16,7 @@ const FollowersCard = () => {
 
   return (
     <div className="FollowersCard">
-      <h3>Who is following you</h3>
+      <h3>Friends List</h3>
 
       {allusers.map((person, id) => {
         if (person._id !== user._id) return <Users person={person} key={id} />;

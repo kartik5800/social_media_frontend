@@ -79,8 +79,6 @@ export function getAllUser() {
     dispatch(slice.actions.startLoading());
     try {
       const response = await axios.get(`http://localhost:8080/user`);
-
-      console.log("================", response);
       dispatch(slice.actions.getAllUserEventsSuccess(response.data));
 
       return response.data;
@@ -101,8 +99,6 @@ export function getUser(profileUserId) {
       const response = await axios.get(
         `http://localhost:8080/user/${profileUserId}`
       );
-
-      console.log("================", response);
       dispatch(slice.actions.getEventsSuccess(response.data));
 
       return response.data;

@@ -50,13 +50,6 @@ const Users = ({ person }) => {
             <span>{person.firstname}</span>
           </Link>
 
-          {/* <Link
-            to={`${PATH_LANDING_APP.profile}/${user?._id}`}
-            style={{ textDecoration: "none", color: "inherit" }}
-          >
-            My Profile
-          </Link> */}
-
           <span>{person.username}</span>
         </div>
       </div>

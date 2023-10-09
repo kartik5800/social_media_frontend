@@ -4,11 +4,13 @@ import FollowersCard from "../../profileSide/followersCard/FollowersCard";
 import InfoCard from "../infoCard/InfoCard";
 import "./ProfileLeft.css";
 
-const ProfileLeft = () => {
+const ProfileLeft = (props) => {
+  const { userData } = props;
+
   return (
     <div className="ProfileSide">
       <LogoSearch />
-      <InfoCard />
+      <InfoCard userData={userData} />
       <FollowersCard />
     </div>
   );

@@ -34,7 +34,6 @@ const handlers = {
     };
   },
   UPDATE_USER_IN_AUTH: (state, action) => {
-    console.log("jwt context", state, action);
     return {
       ...state,
       user: action.payload,

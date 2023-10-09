@@ -9,6 +9,7 @@ import { updateUser } from "../../../redux/userReducer/userReducer";
 const ProfileModal = ({ modalOpened, handleClose, data }) => {
   const { password, ...other } = data;
   const [formData, setFormData] = useState(other);
+
   const [profileImage, setProfileImage] = useState(null);
   const [coverImage, setCoverImage] = useState(null);
   const dispatch = useDispatch();
