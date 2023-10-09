@@ -25,7 +25,7 @@ const InfoCard = ({ userData }) => {
             <ProfileModal
               handleClose={handleClose}
               modalOpened={modalOpened}
-              data={userData}
+              userData={userData}
             />
           </div>
         ) : (

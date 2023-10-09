@@ -5,15 +5,17 @@ import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { uploadImage } from "../../../redux/postReducer/postReducer";
 import { updateUser } from "../../../redux/userReducer/userReducer";
+import "./profileModal.css";
+import { GrFormClose } from "react-icons/gr";
 
-const ProfileModal = ({ modalOpened, handleClose, data }) => {
-  const { password, ...other } = data;
-  const [formData, setFormData] = useState(other);
-
+const ProfileModal = ({ modalOpened, handleClose, userData }) => {
+  const [formData, setFormData] = useState(userData);
   const [profileImage, setProfileImage] = useState(null);
   const [coverImage, setCoverImage] = useState(null);
   const dispatch = useDispatch();
   const params = useParams();
+
+  console.log("userdata", userData);
 
   const { user, updateUserInAuth } = useAuth();
   const handleChange = (e) => {
@@ -77,10 +79,9 @@ const ProfileModal = ({ modalOpened, handleClose, data }) => {
           </Modal.Header>
           <Modal.Body>
             <form className="infoForm" onSubmit={handleSubmit}>
-              <h3>Your Info</h3>
               <div>
                 <input
-                  value={formData.firstname}
+                  value={formData?.firstname}
                   onChange={handleChange}
                   type="text"
                   placeholder="First Name"
@@ -88,7 +89,7 @@ const ProfileModal = ({ modalOpened, handleClose, data }) => {
                   className="infoInput"
                 />
                 <input
-                  value={formData.lastname}
+                  value={formData?.lastname}
                   onChange={handleChange}
                   type="text"
                   placeholder="Last Name"
@@ -99,7 +100,7 @@ const ProfileModal = ({ modalOpened, handleClose, data }) => {
 
               <div>
                 <input
-                  value={formData.worksAt}
+                  value={formData?.worksAt}
                   onChange={handleChange}
                   type="text"
                   placeholder="Works at"
@@ -110,7 +111,7 @@ const ProfileModal = ({ modalOpened, handleClose, data }) => {
 
               <div>
                 <input
-                  value={formData.livesin}
+                  value={formData?.livesin}
                   onChange={handleChange}
                   type="text"
                   placeholder="Lives in"
@@ -118,7 +119,7 @@ const ProfileModal = ({ modalOpened, handleClose, data }) => {
                   className="infoInput"
                 />
                 <input
-                  value={formData.country}
+                  value={formData?.country}
                   onChange={handleChange}
                   type="text"
                   placeholder="Country"
@@ -129,7 +130,7 @@ const ProfileModal = ({ modalOpened, handleClose, data }) => {
 
               <div>
                 <input
-                  value={formData.relationship}
+                  value={formData?.relationship}
                   onChange={handleChange}
                   type="text"
                   className="infoInput"
@@ -138,15 +139,82 @@ const ProfileModal = ({ modalOpened, handleClose, data }) => {
                 />
               </div>
 
-              <div>
-                Profile image
-                <input
-                  type="file"
-                  name="profileImage"
-                  onChange={onImageChange}
-                />
-                Cover image
-                <input type="file" name="coverImage" onChange={onImageChange} />
+              <div style={{ display: "flex", justifyContent: "space-around" }}>
+                <div>
+                  <label htmlFor="profileImage" className="custom-file-upload">
+                    Profile image
+                  </label>
+                  <input
+                    type="file"
+                    id="profileImage"
+                    name="profileImage"
+                    onChange={onImageChange}
+                    style={{ display: "none" }}
+                  />
+
+                  {!profileImage ? (
+                    <div className="image-container">
+                      <img
+                        src={
+                          userData?.profilePicture
+                            ? process.env.REACT_APP_PUBLIC_FOLDER +
+                              userData?.profilePicture
+                            : ""
+                        }
+                        alt=""
+                        className="profile-image"
+                      />
+                    </div>
+                  ) : (
+                    <div className="image-container">
+                      <GrFormClose onClick={() => setProfileImage(null)} />
+                      <img
+                        src={URL.createObjectURL(profileImage)}
+                        alt=""
+                        width="60px"
+                        className="profile-image"
+                      />
+                    </div>
+                  )}
+                </div>
+
+                <div>
+                  <label htmlFor="coverImage" className="custom-file-upload">
+                    Cover image
+                  </label>
+                  <input
+                    type="file"
+                    id="coverImage"
+                    name="coverImage"
+                    onChange={onImageChange}
+                    style={{ display: "none" }}
+                  />
+
+                  {!coverImage ? (
+                    <div className="image-container">
+                      <img
+                        src={
+                          userData?.coverPicture
+                            ? process.env.REACT_APP_PUBLIC_FOLDER +
+                              userData?.coverPicture
+                            : ""
+                        }
+                        alt=""
+                        className="profile-image"
+                      />
+                    </div>
+                  ) : (
+                    <div className="image-container">
+                      <GrFormClose onClick={() => setCoverImage(null)} />
+                      <img
+                        src={URL.createObjectURL(coverImage)}
+                        alt=""
+                        width="60px"
+                        className="profile-image"
+                      />
+                    </div>
+                  )}
+                </div>
               </div>
 
               <button className="button infoButton" type="submit">
@@ -154,11 +222,6 @@ const ProfileModal = ({ modalOpened, handleClose, data }) => {
               </button>
             </form>
           </Modal.Body>
-          <Modal.Footer>
-            <Button className="button" onClick={handleClose}>
-              Update
-            </Button>
-          </Modal.Footer>
         </div>
       </Modal>
     </>

@@ -1,0 +1,59 @@
+.custom-file-upload {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #ff7300;
+    color: #fff;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-right: 10px;
+  }
+  
+  .custom-file-upload:hover {
+    background-color: #0056b3;
+  }
+
+
+  /* Style for the custom file upload button */
+.custom-file-upload {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-right: 10px;
+}
+
+.custom-file-upload:hover {
+  background-color: #0056b3;
+}
+
+/* Style for the container holding the image and close button */
+.image-container {
+  width: 300px;
+  overflow: hidden;
+}
+
+/* Style for the image */
+.profile-image {
+  width: 100%;
+  height: auto;
+  object-fit: cover; /* Adjust this as needed */
+}
+
+/* Style for the close button */
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+  background-color: #f00;
+  color: #fff;
+  padding: 5px;
+  border-radius: 50%;
+  font-size: 16px;
+}
+
+.close-button:hover {
+  background-color: #ff4646;
+}
