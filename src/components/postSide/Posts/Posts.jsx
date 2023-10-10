@@ -29,13 +29,9 @@ const Posts = () => {
 
   return (
     <div className="Posts">
-      {posts.length === 0 ? (
-        <p>No Posts</p>
-      ) : (
-        posts.map((post, id) => {
-          return <Post data={post} key={id} />;
-        })
-      )}
+      {posts.map((post, id) => {
+        return <Post data={post} key={id} />;
+      })}
     </div>
   );
 };

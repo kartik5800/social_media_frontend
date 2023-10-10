@@ -101,6 +101,7 @@ export function uploadPost(data) {
     try {
       const response = await axios.post(`${baseURL}/post`, data);
       dispatch(slice.actions.createEventSuccess(response.data));
+      window.location.reload();
     } catch (error) {
       dispatch(slice.actions.hasError(error));
     }
