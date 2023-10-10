@@ -1,6 +1,8 @@
 import { createContext, useEffect, useReducer } from "react";
 import axios from "axios";
 
+const baseURL = process.env.REACT_APP_BASE_URL;
+
 const initialState = {
   isAuthenticated: false,
   isInitialized: false,
@@ -84,10 +86,7 @@ function AuthProvider({ children }) {
 
   const login = async (data) => {
     try {
-      const response = await axios.post(
-        "http://localhost:8080/auth/login",
-        data
-      );
+      const response = await axios.post(`${baseURL}/auth/login`, data);
 
       const { user, token, expiresIn } = response.data;
 
@@ -117,10 +116,7 @@ function AuthProvider({ children }) {
 
   const register = async (data) => {
     try {
-      const response = await axios.post(
-        "http://localhost:8080/auth/register",
-        data
-      );
+      const response = await axios.post(`${baseURL}/auth/register`, data);
       const { user, token, expiresIn } = response.data;
       const expirationTime = Date.now() + expiresIn;
       window.localStorage.setItem("accessToken", token);

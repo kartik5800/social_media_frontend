@@ -10,8 +10,8 @@ const Post = ({ data }) => {
   const { user } = useAuth();
   const dispatch = useDispatch();
 
-  const [liked, setLiked] = useState(data.likes.includes(user._id));
-  const [likes, setLikes] = useState(data.likes.length);
+  const [liked, setLiked] = useState(data.likes?.includes(user._id) ?? false);
+  const [likes, setLikes] = useState(data.likes?.length ?? 0);
 
   const handleLike = () => {
     dispatch(likePost(data._id, user._id));
@@ -42,9 +42,9 @@ const Post = ({ data }) => {
 
       <div className="detail">
         <span>
-          <b>{data.name}</b>
+          <b>{data?.name}</b>
         </span>
-        <span> {data.desc}</span>
+        <span> {data?.desc}</span>
       </div>
     </div>
   );

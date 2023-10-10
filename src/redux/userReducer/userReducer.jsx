@@ -8,6 +8,8 @@ import { dispatch } from "../store";
 
 // ----------------------------------------------------------------------
 
+const baseURL = process.env.REACT_APP_BASE_URL;
+
 const initialState = {
   isLoading: false,
   error: null,
@@ -75,10 +77,9 @@ export default slice.reducer;
 
 export function getAllUser() {
   return async (dispatch) => {
-    // Pass `dispatch` as an argument
     dispatch(slice.actions.startLoading());
     try {
-      const response = await axios.get(`http://localhost:8080/user`);
+      const response = await axios.get(`${baseURL}/user`);
       dispatch(slice.actions.getAllUserEventsSuccess(response.data));
 
       return response.data;
@@ -93,12 +94,9 @@ export function getAllUser() {
 
 export function getUser(profileUserId) {
   return async (dispatch) => {
-    // Pass `dispatch` as an argument
     dispatch(slice.actions.startLoading());
     try {
-      const response = await axios.get(
-        `http://localhost:8080/user/${profileUserId}`
-      );
+      const response = await axios.get(`${baseURL}/user/${profileUserId}`);
       dispatch(slice.actions.getEventsSuccess(response.data));
 
       return response.data;
@@ -114,10 +112,7 @@ export function updateUser(userId, UserData) {
   return async () => {
     dispatch(slice.actions.startLoading());
     try {
-      const response = await axios.put(
-        `http://localhost:8080/user/${userId}`,
-        UserData
-      );
+      const response = await axios.put(`${baseURL}/user/${userId}`, UserData);
       dispatch(slice.actions.updateEventSuccess(response.data));
     } catch (error) {
       dispatch(slice.actions.hasError(error));
@@ -132,7 +127,7 @@ export function followUser(userId, currentUserId) {
     dispatch(slice.actions.startLoading());
     try {
       const response = await axios.put(
-        `http://localhost:8080/user/${userId}/follow`,
+        `${baseURL}/user/${userId}/follow`,
         currentUserId
       );
       dispatch(slice.actions.followUserSuccess(response.data));
@@ -149,7 +144,7 @@ export function unFollowUser(userId, currentUserId) {
     dispatch(slice.actions.startLoading());
     try {
       const response = await axios.put(
-        `http://localhost:8080/user/${userId}/unfollow`,
+        `${baseURL}/user/${userId}/unfollow`,
         currentUserId
       );
       dispatch(slice.actions.unfollowUserSuccess(response.data));

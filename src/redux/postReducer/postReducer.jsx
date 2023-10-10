@@ -7,6 +7,7 @@ import axios from "axios";
 import { dispatch } from "../store";
 
 // ----------------------------------------------------------------------
+const baseURL = process.env.REACT_APP_BASE_URL;
 
 const initialState = {
   isLoading: false,
@@ -84,9 +85,7 @@ export function getTimelinePosts(userId) {
   return async () => {
     dispatch(slice.actions.startLoading());
     try {
-      const response = await axios.get(
-        `http://localhost:8080/post/${userId}/timeline`
-      );
+      const response = await axios.get(`${baseURL}/post/${userId}/timeline`);
       dispatch(slice.actions.getEventsSuccess(response.data));
     } catch (error) {
       dispatch(slice.actions.hasError(error));
@@ -100,7 +99,7 @@ export function uploadPost(data) {
   return async () => {
     dispatch(slice.actions.startLoading());
     try {
-      const response = await axios.post("http://localhost:8080/post", data);
+      const response = await axios.post(`${baseURL}/post`, data);
       dispatch(slice.actions.createEventSuccess(response.data));
     } catch (error) {
       dispatch(slice.actions.hasError(error));
@@ -108,11 +107,13 @@ export function uploadPost(data) {
   };
 }
 
+// --------------------------------------------------------------------
+
 export function uploadImage(data) {
   return async () => {
     dispatch(slice.actions.startUploadLoading());
     try {
-      const response = await axios.post(`http://localhost:8080/upload`, data);
+      const response = await axios.post(`${baseURL}/upload`, data);
 
       dispatch(slice.actions.updateProfileAttachmentsSuccess(response.data));
     } catch (error) {
@@ -128,10 +129,9 @@ export function likePost(Id, userId) {
     dispatch(slice.actions.startLike());
 
     try {
-      const response = await axios.put(
-        `http://localhost:8080/post/${Id}/like`,
-        { userId: userId }
-      );
+      const response = await axios.put(`${baseURL}/post/${Id}/like`, {
+        userId: userId,
+      });
       const currentState = getState();
       currentState.postReducer.isLoading = false;
 
