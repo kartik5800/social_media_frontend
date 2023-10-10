@@ -25,7 +25,7 @@ const InfoCard = ({ userData }) => {
             <ProfileModal
               handleClose={handleClose}
               modalOpened={modalOpened}
-              userData={userData}
+              Data={userData}
             />
           </div>
         ) : (
@@ -37,28 +37,28 @@ const InfoCard = ({ userData }) => {
         <span>
           <b>Name :- </b>
         </span>
-        <span>{userData.firstname ?? ""}</span>
+        <span>{userData?.firstname ?? ""}</span>
       </div>
 
       <div className="info">
         <span>
           <b>Status :- </b>
         </span>
-        <span>{userData.relationship ?? ""}</span>
+        <span>{userData?.relationship ?? ""}</span>
       </div>
 
       <div className="info">
         <span>
           <b>Lives in :- </b>
         </span>
-        <span>{userData.livesin ?? ""}</span>
+        <span>{userData?.livesin ?? ""}</span>
       </div>
 
       <div className="info">
         <span>
           <b>Works at :- </b>
         </span>
-        <span>{userData.worksAt ?? ""}</span>
+        <span>{userData?.worksAt ?? ""}</span>
       </div>
       {user._id === profileUserId ? (
         <button className="button logout-button">Logout</button>

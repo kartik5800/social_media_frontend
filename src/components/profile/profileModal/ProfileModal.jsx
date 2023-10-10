@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Button, Modal } from "react-bootstrap";
+import React, { useEffect, useState } from "react";
+import { Modal } from "react-bootstrap";
 import useAuth from "../../../hooks/useAuth";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
@@ -8,16 +8,19 @@ import { updateUser } from "../../../redux/userReducer/userReducer";
 import "./profileModal.css";
 import { GrFormClose } from "react-icons/gr";
 
-const ProfileModal = ({ modalOpened, handleClose, userData }) => {
-  const [formData, setFormData] = useState(userData);
+const ProfileModal = ({ modalOpened, handleClose, Data }) => {
+  const [formData, setFormData] = useState(Data);
   const [profileImage, setProfileImage] = useState(null);
   const [coverImage, setCoverImage] = useState(null);
   const dispatch = useDispatch();
   const params = useParams();
 
-  console.log("userdata", userData);
-
   const { user, updateUserInAuth } = useAuth();
+
+  useEffect(() => {
+    setFormData(Data);
+  }, [modalOpened, Data]);
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -81,7 +84,7 @@ const ProfileModal = ({ modalOpened, handleClose, userData }) => {
             <form className="infoForm" onSubmit={handleSubmit}>
               <div>
                 <input
-                  value={formData?.firstname}
+                  value={formData?.firstname ?? ""}
                   onChange={handleChange}
                   type="text"
                   placeholder="First Name"
@@ -89,7 +92,7 @@ const ProfileModal = ({ modalOpened, handleClose, userData }) => {
                   className="infoInput"
                 />
                 <input
-                  value={formData?.lastname}
+                  value={formData?.lastname ?? ""}
                   onChange={handleChange}
                   type="text"
                   placeholder="Last Name"
@@ -100,7 +103,7 @@ const ProfileModal = ({ modalOpened, handleClose, userData }) => {
 
               <div>
                 <input
-                  value={formData?.worksAt}
+                  value={formData?.worksAt ?? ""}
                   onChange={handleChange}
                   type="text"
                   placeholder="Works at"
@@ -111,7 +114,7 @@ const ProfileModal = ({ modalOpened, handleClose, userData }) => {
 
               <div>
                 <input
-                  value={formData?.livesin}
+                  value={formData?.livesin ?? ""}
                   onChange={handleChange}
                   type="text"
                   placeholder="Lives in"
@@ -119,7 +122,7 @@ const ProfileModal = ({ modalOpened, handleClose, userData }) => {
                   className="infoInput"
                 />
                 <input
-                  value={formData?.country}
+                  value={formData?.country ?? ""}
                   onChange={handleChange}
                   type="text"
                   placeholder="Country"
@@ -130,7 +133,7 @@ const ProfileModal = ({ modalOpened, handleClose, userData }) => {
 
               <div>
                 <input
-                  value={formData?.relationship}
+                  value={formData?.relationship ?? ""}
                   onChange={handleChange}
                   type="text"
                   className="infoInput"
@@ -156,9 +159,9 @@ const ProfileModal = ({ modalOpened, handleClose, userData }) => {
                     <div className="image-container">
                       <img
                         src={
-                          userData?.profilePicture
+                          Data?.profilePicture
                             ? process.env.REACT_APP_PUBLIC_FOLDER +
-                              userData?.profilePicture
+                              Data?.profilePicture
                             : ""
                         }
                         alt=""
@@ -194,9 +197,9 @@ const ProfileModal = ({ modalOpened, handleClose, userData }) => {
                     <div className="image-container">
                       <img
                         src={
-                          userData?.coverPicture
+                          Data?.coverPicture
                             ? process.env.REACT_APP_PUBLIC_FOLDER +
-                              userData?.coverPicture
+                              Data?.coverPicture
                             : ""
                         }
                         alt=""
