@@ -23,7 +23,13 @@ const RightSide = () => {
         </Link>
         <AiFillSetting />
         <IoIosNotifications />
-        <BiCommentDetail />
+
+        <Link
+          to={PATH_LANDING_APP.chat}
+          style={{ textDecoration: "none", color: "inherit" }}
+        >
+          <BiCommentDetail />
+        </Link>
       </div>
 
       <TrendCard />

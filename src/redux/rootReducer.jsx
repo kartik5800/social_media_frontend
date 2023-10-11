@@ -6,6 +6,8 @@ import storage from "redux-persist/lib/storage";
 // slices
 import postReducer from "./postReducer/postReducer";
 import userReducer from "./userReducer/userReducer";
+import chatReducer from "./chatReducer/chatReducer";
+import messageReducer from "./messageReducer/messageReducer";
 // dashboard
 
 // ----------------------------------------------------------------------
@@ -20,6 +22,8 @@ const rootPersistConfig = {
 const rootReducer = combineReducers({
   postReducer,
   userReducer,
+  chatReducer,
+  messageReducer,
 });
 
 export { rootPersistConfig, rootReducer };
