@@ -72,7 +72,7 @@ const ChatBox = ({ chat, currentUser, setSendMessage, receivedMessage }) => {
     <div className="ChatBox-container">
       {chat ? (
         <>
-          {/* chat-header */}
+          {/* chat-header --- */}
           <div className="chat-header">
             <div className="follower">
               <div>

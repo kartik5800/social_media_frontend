@@ -6,7 +6,7 @@ import axios from "axios";
 //
 import { dispatch } from "../store";
 
-// ----------------------------------------------------------------------
+// ----------------------------------------------
 const baseURL = process.env.REACT_APP_BASE_URL;
 
 const initialState = {
@@ -41,7 +41,7 @@ const slice = createSlice({
 // Reducer
 export default slice.reducer;
 
-// ----------------------------------------------------------------------
+// ----------------------------------------------
 
 export function getMessages(id) {
   return async () => {
@@ -55,7 +55,7 @@ export function getMessages(id) {
   };
 }
 
-// ----------------------------------------------------------------------
+// ----------------------------------------------
 
 export function addMessage(data) {
   return async () => {
@@ -69,4 +69,4 @@ export function addMessage(data) {
   };
 }
 
-// --------------------------------------------------------------------
+// ----------------------------------------------

@@ -40,6 +40,7 @@ const Conversation = ({ data, currentUser, online }) => {
             className="followerImage"
             style={{ width: "50px", height: "50px" }}
           />
+
           <div className="name" style={{ fontSize: "0.8rem" }}>
             <span>
               {users?.firstname} {users?.lastname}
